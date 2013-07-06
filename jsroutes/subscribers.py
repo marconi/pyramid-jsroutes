@@ -4,11 +4,21 @@ from mako.template import Template
 from pyramid.interfaces import IRoutesMapper
 from pyramid.threadlocal import get_current_request
 
+from .utils import asbool
+
 
 def inspect_routes(event):
     """ Fetch all routes, normalize, render then attach to request. """
-    mapper = event.request.registry.queryUtility(IRoutesMapper)
 
+    # retrieve cached routes from registry and depending
+    # on the settings, reload the routes.
+    registry = event.request.registry
+    reload_routes = asbool(registry.settings.get('jsroutes.reload_routes', False))
+    routes = getattr(event.request.registry, '_routes', None)
+    if routes and not reload_routes:
+        return
+
+    mapper = registry.queryUtility(IRoutesMapper)
     routes = {}
     for route in mapper.get_routes():
         args = []
@@ -47,7 +57,7 @@ def inspect_routes(event):
             % endfor
         };
     """)
-    event.request._routes = template.render(**context)
+    registry._routes = template.render(**context)
 
 
 def attach_routes(event):
@@ -55,4 +65,6 @@ def attach_routes(event):
     request = event.get('request')
     if request is None:
         request = get_current_request()
-    event.update({'jsroutes': request._routes})
+
+    routes = getattr(request.registry, '_routes', '')
+    event.update({'jsroutes': routes})

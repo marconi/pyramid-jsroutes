@@ -1,12 +1,15 @@
-# Pyramid JSRoutes
+Pyramid JSRoutes
+================
 
 A pyramid routes composer for javascript.
 
-## Installation
+Installation
+------------
 
     pip install -U pyramid-jsroutes
 
-## Usage
+Usage
+-----
 
 Include the package in your Pyramid app's main function:
 
@@ -28,6 +31,14 @@ then you can start composing your Pyramid routes from javascript like:
 JSROUTES.blog_post(1)  // /posts/1
 ```
 
-### Note
+Settings
+--------
+
+By default it'll only collect the routes once and store it in the registry but you can force reloading everytime for development by settings the following settings:
+
+    jsroutes.reload_routes = true
+
+Note
+----
 
 Each time your modify your Pyramid routes, you need to refresh your page to refetch the updated routes.
