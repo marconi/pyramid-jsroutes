@@ -2,6 +2,10 @@
 
 A pyramid routes composer for javascript.
 
+## Installation
+
+    pip install -U pyramid-jsroutes
+
 ## Usage
 
 Include the package in your Pyramid app's main function:

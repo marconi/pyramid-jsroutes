@@ -17,7 +17,7 @@ packages = ['jsroutes']
 requires = ['Pyramid']
 
 setup(
-    name='jsroutes',
+    name='pyramid-jsroutes',
     version=jsroutes.__version__,
     packages=packages,
     license=open('LICENSE.txt').read(),
