@@ -47,11 +47,15 @@ def inspect_routes(event):
         var JSROUTES = {
             % for route_name, pattern in routes.items():
                 "${route_name}": function() {
-                    var pattern = "${pattern[0]}",
-                        patterArgs = ${pattern[1]};
+                    var pattern = "${pattern[0]}"
+                    % if pattern[1]:
+                        , patterArgs = ${pattern[1]};
                     for (var i=0; i<arguments.length; i++) {
                         pattern = pattern.replace("{" + patterArgs[i] + "}", arguments[i] || "");
                     }
+                    % else:
+                    ;
+                    % endif
                     return pattern;
                 }${',' if not loop.last else ''}
             % endfor
